@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "conways_game_of_cobblestone:conways_game_of_cobblestone_block"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "conways_game_of_cobblestone:blocks/conways_game_of_cobblestone_block"
+}
