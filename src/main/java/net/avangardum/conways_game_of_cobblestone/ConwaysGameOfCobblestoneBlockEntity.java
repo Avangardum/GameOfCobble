@@ -28,9 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements MenuProvider {
-    private final int GRID_HEIGHT = 10;
-    private final int GRID_WIDTH = 10;
-    private final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
+    public static final int GRID_HEIGHT = 10;
+    public static final int GRID_WIDTH = 10;
+    private static final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
 
     private final String INVENTORY_SAVE_KEY = "inventory";
 
@@ -47,6 +47,11 @@ public class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return stack.is(Blocks.COBBLESTONE.asItem());
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
         }
     };
 
@@ -66,7 +71,7 @@ public class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements 
     @Override
     public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInventory,
             @NotNull Player player) {
-        throw new NotImplementedException();
+        return new ConwaysGameOfCobblestoneMenu(containerId, playerInventory, this);
     }
 
     @NotNull
