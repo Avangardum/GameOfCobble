@@ -10,18 +10,18 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-public class ModMenuTypes {
-    public static final DeferredRegister<MenuType<?>> MENU_TYPES =
-        DeferredRegister.create(ForgeRegistries.MENU_TYPES, ConwaysGameOfCobblestoneMod.MOD_ID);
+final class ModMenuTypes {
+    public static final @NotNull DeferredRegister<MenuType<?>> MENU_TYPES =
+            DeferredRegister.create(ForgeRegistries.MENU_TYPES, ConwaysGameOfCobblestoneMod.MOD_ID);
 
-    public static final RegistryObject<MenuType<ConwaysGameOfCobblestoneMenu>> CONWAYS_GAME_OF_COBBLESTONE_MENU =
+    public static final @NotNull RegistryObject<MenuType<ConwaysGameOfCobblestoneMenu>> CONWAYS_GAME_OF_COBBLESTONE_MENU =
         registerMenuType(ConwaysGameOfCobblestoneMenu::new, "conways_game_of_cobblestone_menu");
 
-    public static void register(IEventBus bus) {
+    public static void register(@NotNull IEventBus bus) {
         MENU_TYPES.register(bus);
     }
 
-    private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(
+    private static <T extends AbstractContainerMenu> @NotNull RegistryObject<MenuType<T>> registerMenuType(
             @NotNull IContainerFactory<T> factory, @NotNull String name) {
         return MENU_TYPES.register(name, () -> IForgeMenuType.create(factory));
     }

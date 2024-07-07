@@ -4,11 +4,12 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.jetbrains.annotations.NotNull;
 
 @Mod.EventBusSubscriber(modid = ConwaysGameOfCobblestoneMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class MenuScreenRegisterer {
+final class MenuScreenRegisterer {
     @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent event) {
+    public static void clientSetup(@NotNull FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(ModMenuTypes.CONWAYS_GAME_OF_COBBLESTONE_MENU.get(),
                 ConwaysGameOfCobblestoneScreen::new);
