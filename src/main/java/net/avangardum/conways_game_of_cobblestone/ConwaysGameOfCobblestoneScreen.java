@@ -7,10 +7,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.NotNull;
 
-public class ConwaysGameOfCobblestoneScreen extends AbstractContainerScreen<ConwaysGameOfCobblestoneMenu> {
-    public static final ResourceLocation TEXTURE =
-        new ResourceLocation(ConwaysGameOfCobblestoneMod.MOD_ID, "textures/gui/conways_game_of_cobblestone_gui.png");
+final class ConwaysGameOfCobblestoneScreen extends AbstractContainerScreen<ConwaysGameOfCobblestoneMenu> {
+    public static final ResourceLocation TEXTURE = new ResourceLocation(
+            ConwaysGameOfCobblestoneMod.MOD_ID, "textures/gui/conways_game_of_cobblestone_gui.png");
 
     public ConwaysGameOfCobblestoneScreen(ConwaysGameOfCobblestoneMenu menu, Inventory playerInventory, Component title)
     {
@@ -38,7 +39,7 @@ public class ConwaysGameOfCobblestoneScreen extends AbstractContainerScreen<Conw
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderTooltip(guiGraphics, mouseX, mouseY);

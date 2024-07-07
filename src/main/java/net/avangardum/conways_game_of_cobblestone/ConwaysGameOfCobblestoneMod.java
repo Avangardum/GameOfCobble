@@ -7,7 +7,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ConwaysGameOfCobblestoneMod.MOD_ID)
-public class ConwaysGameOfCobblestoneMod
+public final class ConwaysGameOfCobblestoneMod
 {
     public static final String MOD_ID = "conways_game_of_cobblestone";
 

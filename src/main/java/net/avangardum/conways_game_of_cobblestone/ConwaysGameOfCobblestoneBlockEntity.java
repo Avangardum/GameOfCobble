@@ -23,11 +23,10 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements MenuProvider {
+final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements MenuProvider {
     public static final int GRID_HEIGHT = 10;
     public static final int GRID_WIDTH = 10;
     private static final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
@@ -55,28 +54,25 @@ public class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements 
         }
     };
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private @NotNull LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public ConwaysGameOfCobblestoneBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public ConwaysGameOfCobblestoneBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         super(ModBlockEntityTypes.CONWAYS_GAME_OF_COBBLESTONE_BET.get(), blockPos, blockState);
     }
 
-    @NotNull
     @Override
-    public Component getDisplayName() {
+    public @NotNull Component getDisplayName() {
         return Component.literal("Conway's Game of Cobblestone");
     }
 
-    @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInventory,
+    public @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInventory,
             @NotNull Player player) {
         return new ConwaysGameOfCobblestoneMenu(containerId, playerInventory, this);
     }
 
-    @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
         if (capability == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
 
         return super.getCapability(capability, side);
@@ -100,15 +96,13 @@ public class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements 
         itemHandler.deserializeNBT(pTag.getCompound(INVENTORY_SAVE_KEY));
     }
 
-    @Nullable
     @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
+    public @NotNull Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @NotNull
     @Override
-    public CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag() {
         return saveWithoutMetadata();
     }
 

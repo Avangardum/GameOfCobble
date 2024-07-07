@@ -10,16 +10,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
-import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
-public class ConwaysGameOfCobblestoneMenu extends AbstractContainerMenu {
+final class ConwaysGameOfCobblestoneMenu extends AbstractContainerMenu {
     private final int SLOT_SIZE = 18;
 
     private final ConwaysGameOfCobblestoneBlockEntity blockEntity;
     private final Level level;
 
-    protected ConwaysGameOfCobblestoneMenu(int containerId, Inventory playerInventory,
+    ConwaysGameOfCobblestoneMenu(int containerId, Inventory playerInventory,
             ConwaysGameOfCobblestoneBlockEntity blockEntity) {
         super(ModMenuTypes.CONWAYS_GAME_OF_COBBLESTONE_MENU.get(), containerId);
         this.blockEntity = blockEntity;
@@ -28,36 +27,35 @@ public class ConwaysGameOfCobblestoneMenu extends AbstractContainerMenu {
         addBlockEntitySlots();
     }
 
-    protected ConwaysGameOfCobblestoneMenu(int containerId, Inventory inventory, FriendlyByteBuf extraData) {
+    ConwaysGameOfCobblestoneMenu(int containerId, Inventory inventory, FriendlyByteBuf extraData) {
         this(containerId, inventory,
-            (ConwaysGameOfCobblestoneBlockEntity) inventory.player.level().getBlockEntity(extraData.readBlockPos()));
+                (ConwaysGameOfCobblestoneBlockEntity) inventory.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    @NotNull
     @Override
-    public ItemStack quickMoveStack(@NotNull Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         return ItemStack.EMPTY;
     }
 
     @Override
     public boolean stillValid(@NotNull Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player,
-            ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get());
+                ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get());
     }
 
     private void addPlayerHotBarSlots(Inventory playerInventory) {
         var slotCount = 9;
         var startX = 17;
         var y = 192;
-        for (var i = 0; i < slotCount; i++) {
-            int x = startX + i * SLOT_SIZE;
-            addSlot(new Slot(playerInventory, i, x, y));
+        for (var index = 0; index < slotCount; index++) {
+            int x = startX + index * SLOT_SIZE;
+            addSlot(new Slot(playerInventory, index, x, y));
         }
     }
 
     private void addBlockEntitySlots() {
         var itemHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
-            .orElseThrow(() -> new RuntimeException("Item handler does not exist"));
+                .orElseThrow(() -> new RuntimeException("Item handler does not exist"));
         var startX = 8;
         var startY = 8;
         var height = ConwaysGameOfCobblestoneBlockEntity.GRID_HEIGHT;

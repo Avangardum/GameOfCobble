@@ -13,35 +13,32 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
-    public ConwaysGameOfCobblestoneBlock(Properties pProperties) {
-        super(pProperties);
+final class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
+    public ConwaysGameOfCobblestoneBlock(@NotNull Properties properties) {
+        super(properties);
     }
 
-    @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new ConwaysGameOfCobblestoneBlockEntity(blockPos, blockState);
     }
 
     @Override
-    @NotNull
-    public RenderShape getRenderShape(BlockState pState) {
+    public @NotNull RenderShape getRenderShape(@NotNull BlockState blockState) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos position,
+    public void onRemove(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos position,
             @NotNull BlockState newState, boolean isMovedByPiston) {
         var blockEntity = getBlockEntity(level, position);
         blockEntity.dropInventory();
-        super.onRemove(state, level, position, newState, isMovedByPiston);
+        super.onRemove(blockState, level, position, newState, isMovedByPiston);
     }
 
     @Override
-    public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos position,
+    public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos position,
             @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             var blockEntity = getBlockEntity(level, position);
@@ -51,8 +48,7 @@ public class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    @NotNull
-    private ConwaysGameOfCobblestoneBlockEntity getBlockEntity(@NotNull Level level, @NotNull BlockPos position) {
+    private @NotNull ConwaysGameOfCobblestoneBlockEntity getBlockEntity(@NotNull Level level, @NotNull BlockPos position) {
         var result = (ConwaysGameOfCobblestoneBlockEntity)level.getBlockEntity(position);
         assert result != null;
         return result;
