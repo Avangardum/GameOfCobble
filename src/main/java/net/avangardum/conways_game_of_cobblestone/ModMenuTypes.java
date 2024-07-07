@@ -15,7 +15,7 @@ final class ModMenuTypes {
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, ConwaysGameOfCobblestoneMod.MOD_ID);
 
     public static final @NotNull RegistryObject<MenuType<ConwaysGameOfCobblestoneMenu>> CONWAYS_GAME_OF_COBBLESTONE_MENU =
-        registerMenuType(ConwaysGameOfCobblestoneMenu::new, "conways_game_of_cobblestone_menu");
+            registerMenuType(ConwaysGameOfCobblestoneMenu::new, "conways_game_of_cobblestone_menu");
 
     public static void register(@NotNull IEventBus bus) {
         MENU_TYPES.register(bus);
