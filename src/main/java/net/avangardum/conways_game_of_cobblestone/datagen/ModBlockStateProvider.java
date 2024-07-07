@@ -7,9 +7,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
-public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+final class ModBlockStateProvider extends BlockStateProvider {
+    public ModBlockStateProvider(@NotNull PackOutput output, @NotNull ExistingFileHelper exFileHelper) {
         super(output, ConwaysGameOfCobblestoneMod.MOD_ID, exFileHelper);
     }
 
@@ -18,7 +19,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         blockWithItem(ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK);
     }
 
-    private void blockWithItem(RegistryObject<Block> blockRegistryObject) {
+    private void blockWithItem(@NotNull RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(), cubeAll(blockRegistryObject.get()));
     }
 }

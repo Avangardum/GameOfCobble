@@ -7,24 +7,25 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModBlockTagsProvider extends BlockTagsProvider {
-    public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                @Nullable ExistingFileHelper existingFileHelper) {
+final class ModBlockTagsProvider extends BlockTagsProvider {
+    public ModBlockTagsProvider(@NotNull PackOutput output,
+            @NotNull CompletableFuture<HolderLookup.Provider> lookupProvider,
+            @NotNull ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, ConwaysGameOfCobblestoneMod.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-            ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()
+                ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()
         );
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(
-            ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()
+                ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()
         );
     }
 }
