@@ -19,5 +19,6 @@ final class DataGenerators {
         generator.addProvider(event.includeServer(), new ModLootTableProvider(packOutput));
         generator.addProvider(event.includeServer(),
                 new ModBlockTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput));
     }
 }

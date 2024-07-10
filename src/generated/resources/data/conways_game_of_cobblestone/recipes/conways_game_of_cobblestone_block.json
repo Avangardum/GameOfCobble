@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:cobblestone"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "III",
+    "ICI",
+    "III"
+  ],
+  "result": {
+    "item": "conways_game_of_cobblestone:conways_game_of_cobblestone_block"
+  },
+  "show_notification": true
+}
