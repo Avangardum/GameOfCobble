@@ -1,5 +1,6 @@
 package net.avangardum.conways_game_of_cobblestone;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -113,6 +114,10 @@ final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements M
         }
         assert level != null;
         Containers.dropContents(level, worldPosition, container);
+    }
+
+    public void tick() {
+        LogUtils.getLogger().info("tick");
     }
 
     @Override
