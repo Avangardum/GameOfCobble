@@ -1,5 +1,6 @@
 package net.avangardum.conways_game_of_cobblestone;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,13 +14,20 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 final class ConwaysGameOfCobblestoneMenu extends AbstractContainerMenu {
-    private final int SLOT_SIZE = 18;
+    private static final int SLOT_SIZE = 18;
+    private static final int HOTBAR_SLOT_COUNT = 9;
+    private static final int HOTBAR_FIRST_SLOT_INDEX = 0;
+    private static final int HOTBAR_LAST_SLOT_INDEX = HOTBAR_FIRST_SLOT_INDEX + HOTBAR_SLOT_COUNT - 1;
+    private static final int CONWAYS_GAME_OF_COBBLESTONE_SLOT_COUNT = ConwaysGameOfCobblestoneBlockEntity.GRID_SIZE;
+    private static final int CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX = HOTBAR_LAST_SLOT_INDEX + 1;
+    private static final int CONWAYS_GAME_OF_COBBLESTONE_LAST_SLOT_INDEX =
+            CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX + CONWAYS_GAME_OF_COBBLESTONE_SLOT_COUNT - 1;
 
     private final ConwaysGameOfCobblestoneBlockEntity blockEntity;
     private final Level level;
 
-    ConwaysGameOfCobblestoneMenu(int containerId, Inventory playerInventory,
-            ConwaysGameOfCobblestoneBlockEntity blockEntity) {
+    ConwaysGameOfCobblestoneMenu(int containerId, @NotNull Inventory playerInventory,
+            @NotNull ConwaysGameOfCobblestoneBlockEntity blockEntity) {
         super(ModMenuTypes.CONWAYS_GAME_OF_COBBLESTONE_MENU.get(), containerId);
         this.blockEntity = blockEntity;
         level = playerInventory.player.level();
@@ -27,14 +35,21 @@ final class ConwaysGameOfCobblestoneMenu extends AbstractContainerMenu {
         addBlockEntitySlots();
     }
 
-    ConwaysGameOfCobblestoneMenu(int containerId, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerId, inventory,
-                (ConwaysGameOfCobblestoneBlockEntity) inventory.player.level().getBlockEntity(extraData.readBlockPos()));
+    ConwaysGameOfCobblestoneMenu(int containerId, @NotNull Inventory inventory, @NotNull FriendlyByteBuf extraData) {
+        this(containerId, inventory, getBlockEntity(inventory, extraData.readBlockPos()));
     }
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        return ItemStack.EMPTY;
+        if (!(CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX <= index &&
+                index <= CONWAYS_GAME_OF_COBBLESTONE_LAST_SLOT_INDEX))
+            return ItemStack.EMPTY;
+
+        var slot = slots.get(index);
+        var stack = slot.getItem();
+        var stackCopy = stack.copy();
+        var isSuccessful = moveItemStackTo(stack, HOTBAR_FIRST_SLOT_INDEX, HOTBAR_LAST_SLOT_INDEX + 1, false);
+        return isSuccessful ? stackCopy : ItemStack.EMPTY;
     }
 
     @Override
@@ -68,5 +83,12 @@ final class ConwaysGameOfCobblestoneMenu extends AbstractContainerMenu {
                 addSlot(new SlotItemHandler(itemHandler, index, x, y));
             }
         }
+    }
+
+    private static @NotNull ConwaysGameOfCobblestoneBlockEntity getBlockEntity(
+            @NotNull Inventory inventory, @NotNull BlockPos blockPos) {
+        var blockEntity = (ConwaysGameOfCobblestoneBlockEntity) inventory.player.level().getBlockEntity(blockPos);
+        assert blockEntity != null;
+        return blockEntity;
     }
 }

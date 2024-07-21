@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements MenuProvider {
     public static final int GRID_HEIGHT = 10;
     public static final int GRID_WIDTH = 10;
-    private static final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
+    public static final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
 
     private final String INVENTORY_SAVE_KEY = "inventory";
 
@@ -117,7 +117,7 @@ final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements M
         Containers.dropContents(level, worldPosition, container);
     }
 
-    public void tick() {
+    public void redstoneTick() {
         var oldGameOfLifeFlatCells = IntStream.range(0, GRID_SIZE)
                 .mapToObj(i -> itemHandler.getStackInSlot(i).getCount() > 0).toArray(Boolean[]::new);
         var gameOfLifeGrid = new ConwaysGameOfLifeGrid(GRID_WIDTH, GRID_HEIGHT, oldGameOfLifeFlatCells);

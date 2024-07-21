@@ -77,7 +77,7 @@ final class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
             level.setBlock(blockPos, blockState.setValue(TRIGGERED, true), SetBlockFlags.PREVENT_RERENDER);
             var blockEntity = (ConwaysGameOfCobblestoneBlockEntity)
                     new BlockSourceImpl(serverLevel, blockPos).getEntity();
-            blockEntity.tick();
+            blockEntity.redstoneTick();
         }
         else if (wasTriggered && !isTriggered) {
             level.setBlock(blockPos, blockState.setValue(TRIGGERED, false), SetBlockFlags.PREVENT_RERENDER);
