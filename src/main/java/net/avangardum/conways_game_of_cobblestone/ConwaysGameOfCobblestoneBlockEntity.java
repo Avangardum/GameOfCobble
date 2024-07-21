@@ -1,6 +1,5 @@
 package net.avangardum.conways_game_of_cobblestone;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +25,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.IntStream;
 
 final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements MenuProvider {
     public static final int GRID_HEIGHT = 10;
@@ -117,7 +118,16 @@ final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements M
     }
 
     public void tick() {
-        LogUtils.getLogger().info("tick");
+        var oldGameOfLifeFlatCells = IntStream.range(0, GRID_SIZE)
+                .mapToObj(i -> itemHandler.getStackInSlot(i).getCount() > 0).toArray(Boolean[]::new);
+        var gameOfLifeGrid = new ConwaysGameOfLifeGrid(GRID_WIDTH, GRID_HEIGHT, oldGameOfLifeFlatCells);
+        gameOfLifeGrid.proceedToNextGeneration();
+        var newGameOfLifeFlatCells = gameOfLifeGrid.getFlatCells();
+        for (var i = 0; i < GRID_SIZE; i++) {
+            var isCellLiving = newGameOfLifeFlatCells[i];
+            var stack = isCellLiving ? new ItemStack(Blocks.COBBLESTONE, 1) : ItemStack.EMPTY;
+            itemHandler.setStackInSlot(i, stack);
+        }
     }
 
     @Override

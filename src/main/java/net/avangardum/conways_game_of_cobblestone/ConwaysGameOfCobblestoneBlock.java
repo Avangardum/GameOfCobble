@@ -39,10 +39,13 @@ final class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos position,
-            @NotNull BlockState newState, boolean isMovedByPiston) {
-        var blockEntity = getBlockEntity(level, position);
-        blockEntity.dropInventory();
-        super.onRemove(blockState, level, position, newState, isMovedByPiston);
+            @NotNull BlockState newBlockState, boolean isMovedByPiston) {
+        if (blockState.getBlock() != newBlockState.getBlock()) {
+            var blockEntity = getBlockEntity(level, position);
+            blockEntity.dropInventory();
+        }
+
+        super.onRemove(blockState, level, position, newBlockState, isMovedByPiston);
     }
 
     @Override
