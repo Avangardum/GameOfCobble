@@ -1,8 +1,6 @@
 package net.avangardum.conways_game_of_cobblestone;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSourceImpl;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -67,16 +65,12 @@ final class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
             @NotNull Block neighborBlock,
             @NotNull BlockPos neighborBlockPos,
             boolean isMovedByPiston) {
-        assert level instanceof ServerLevel;
-        var serverLevel = (ServerLevel) level;
-
         super.neighborChanged(blockState, level, blockPos, neighborBlock, neighborBlockPos, isMovedByPiston);
         var isTriggered = level.hasNeighborSignal(blockPos);
         var wasTriggered = blockState.getValue(TRIGGERED);
         if (!wasTriggered && isTriggered) {
             level.setBlock(blockPos, blockState.setValue(TRIGGERED, true), SetBlockFlags.PREVENT_RERENDER);
-            var blockEntity = (ConwaysGameOfCobblestoneBlockEntity)
-                    new BlockSourceImpl(serverLevel, blockPos).getEntity();
+            var blockEntity = getBlockEntity(level, blockPos);
             blockEntity.redstoneTick();
         }
         else if (wasTriggered && !isTriggered) {
