@@ -1,4 +1,4 @@
-package net.avangardum.conways_game_of_cobblestone;
+package net.avangardum.gameofcobble;
 
 /** Flags for {@link net.minecraft.world.level.Level#setBlock Level.setBlock}. See setBlock docs for more info. */
 @SuppressWarnings("unused")

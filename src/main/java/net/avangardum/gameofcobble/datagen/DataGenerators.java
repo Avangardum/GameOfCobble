@@ -1,6 +1,6 @@
-package net.avangardum.conways_game_of_cobblestone.datagen;
+package net.avangardum.gameofcobble.datagen;
 
-import net.avangardum.conways_game_of_cobblestone.ConwaysGameOfCobblestoneMod;
+import net.avangardum.gameofcobble.ConwaysGameOfCobblestoneMod;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

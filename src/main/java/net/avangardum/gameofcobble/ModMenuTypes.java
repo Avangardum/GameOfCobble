@@ -1,4 +1,4 @@
-package net.avangardum.conways_game_of_cobblestone;
+package net.avangardum.gameofcobble;
 
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;

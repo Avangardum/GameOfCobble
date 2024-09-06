@@ -1,4 +1,4 @@
-package net.avangardum.conways_game_of_cobblestone;
+package net.avangardum.gameofcobble;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

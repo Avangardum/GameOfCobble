@@ -1,4 +1,4 @@
-package net.avangardum.conways_game_of_cobblestone;
+package net.avangardum.gameofcobble;
 
 final class ConwaysGameOfLifeGrid {
     private final int width;

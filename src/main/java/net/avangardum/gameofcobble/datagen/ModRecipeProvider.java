@@ -1,6 +1,6 @@
-package net.avangardum.conways_game_of_cobblestone.datagen;
+package net.avangardum.gameofcobble.datagen;
 
-import net.avangardum.conways_game_of_cobblestone.ModBlocks;
+import net.avangardum.gameofcobble.ModBlocks;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;

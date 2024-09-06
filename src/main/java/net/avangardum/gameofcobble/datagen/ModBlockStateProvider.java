@@ -1,7 +1,7 @@
-package net.avangardum.conways_game_of_cobblestone.datagen;
+package net.avangardum.gameofcobble.datagen;
 
-import net.avangardum.conways_game_of_cobblestone.ConwaysGameOfCobblestoneMod;
-import net.avangardum.conways_game_of_cobblestone.ModBlocks;
+import net.avangardum.gameofcobble.ConwaysGameOfCobblestoneMod;
+import net.avangardum.gameofcobble.ModBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;

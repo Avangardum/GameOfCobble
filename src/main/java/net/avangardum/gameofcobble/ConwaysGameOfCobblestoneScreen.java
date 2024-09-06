@@ -1,4 +1,4 @@
-package net.avangardum.conways_game_of_cobblestone;
+package net.avangardum.gameofcobble;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;

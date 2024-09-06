@@ -1,4 +1,4 @@
-package net.avangardum.conways_game_of_cobblestone;
+package net.avangardum.gameofcobble;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
