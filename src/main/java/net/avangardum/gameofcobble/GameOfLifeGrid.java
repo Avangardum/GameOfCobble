@@ -1,11 +1,11 @@
 package net.avangardum.gameofcobble;
 
-final class ConwaysGameOfLifeGrid {
+final class GameOfLifeGrid {
     private final int width;
     private final int height;
     private final Boolean[] flatCells;
 
-    public ConwaysGameOfLifeGrid(int width, int height, Boolean[] flatCells) {
+    public GameOfLifeGrid(int width, int height, Boolean[] flatCells) {
         assert width * height == flatCells.length;
         this.width = width;
         this.height = height;
@@ -61,7 +61,7 @@ final class ConwaysGameOfLifeGrid {
         return row * width + column;
     }
 
-    private ConwaysGameOfLifeGrid copy() {
-        return new ConwaysGameOfLifeGrid(width, height, flatCells);
+    private GameOfLifeGrid copy() {
+        return new GameOfLifeGrid(width, height, flatCells);
     }
 }

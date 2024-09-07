@@ -18,16 +18,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
-final class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
+final class GameOfCobbleBlock extends BaseEntityBlock {
     private static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 
-    public ConwaysGameOfCobblestoneBlock(@NotNull Properties properties) {
+    public GameOfCobbleBlock(@NotNull Properties properties) {
         super(properties);
     }
 
     @Override
     public @NotNull BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        return new ConwaysGameOfCobblestoneBlockEntity(blockPos, blockState);
+        return new GameOfCobbleBlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -83,8 +83,8 @@ final class ConwaysGameOfCobblestoneBlock extends BaseEntityBlock {
         builder.add(TRIGGERED);
     }
 
-    private @NotNull ConwaysGameOfCobblestoneBlockEntity getBlockEntity(@NotNull Level level, @NotNull BlockPos position) {
-        var result = (ConwaysGameOfCobblestoneBlockEntity)level.getBlockEntity(position);
+    private @NotNull GameOfCobbleBlockEntity getBlockEntity(@NotNull Level level, @NotNull BlockPos position) {
+        var result = (GameOfCobbleBlockEntity)level.getBlockEntity(position);
         assert result != null;
         return result;
     }

@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 final class ModItems {
     public static final @NotNull DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, ConwaysGameOfCobblestoneMod.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.ITEMS, GameOfCobbleMod.MOD_ID);
 
     public static void register(@NotNull IEventBus bus) {
         ITEMS.register(bus);

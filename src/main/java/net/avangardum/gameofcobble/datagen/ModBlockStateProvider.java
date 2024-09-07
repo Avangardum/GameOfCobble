@@ -1,6 +1,6 @@
 package net.avangardum.gameofcobble.datagen;
 
-import net.avangardum.gameofcobble.ConwaysGameOfCobblestoneMod;
+import net.avangardum.gameofcobble.GameOfCobbleMod;
 import net.avangardum.gameofcobble.ModBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 final class ModBlockStateProvider extends BlockStateProvider {
     public ModBlockStateProvider(@NotNull PackOutput output, @NotNull ExistingFileHelper exFileHelper) {
-        super(output, ConwaysGameOfCobblestoneMod.MOD_ID, exFileHelper);
+        super(output, GameOfCobbleMod.MOD_ID, exFileHelper);
     }
 
     @Override

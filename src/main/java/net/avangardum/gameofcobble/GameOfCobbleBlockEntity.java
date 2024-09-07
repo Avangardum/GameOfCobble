@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.IntStream;
 
-final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements MenuProvider {
+final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider {
     public static final int GRID_HEIGHT = 10;
     public static final int GRID_WIDTH = 10;
     public static final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
@@ -58,7 +58,7 @@ final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements M
 
     private @NotNull LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public ConwaysGameOfCobblestoneBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+    public GameOfCobbleBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         super(ModBlockEntityTypes.CONWAYS_GAME_OF_COBBLESTONE_BET.get(), blockPos, blockState);
     }
 
@@ -70,7 +70,7 @@ final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements M
     @Override
     public @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory playerInventory,
             @NotNull Player player) {
-        return new ConwaysGameOfCobblestoneMenu(containerId, playerInventory, this);
+        return new GameOfCobbleMenu(containerId, playerInventory, this);
     }
 
     @Override
@@ -120,7 +120,7 @@ final class ConwaysGameOfCobblestoneBlockEntity extends BlockEntity implements M
     public void redstoneTick() {
         var oldGameOfLifeFlatCells = IntStream.range(0, GRID_SIZE)
                 .mapToObj(i -> itemHandler.getStackInSlot(i).getCount() > 0).toArray(Boolean[]::new);
-        var gameOfLifeGrid = new ConwaysGameOfLifeGrid(GRID_WIDTH, GRID_HEIGHT, oldGameOfLifeFlatCells);
+        var gameOfLifeGrid = new GameOfLifeGrid(GRID_WIDTH, GRID_HEIGHT, oldGameOfLifeFlatCells);
         gameOfLifeGrid.proceedToNextGeneration();
         var newGameOfLifeFlatCells = gameOfLifeGrid.getFlatCells();
         for (var i = 0; i < GRID_SIZE; i++) {

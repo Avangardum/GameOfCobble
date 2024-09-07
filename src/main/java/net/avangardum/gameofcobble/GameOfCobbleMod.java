@@ -6,12 +6,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(ConwaysGameOfCobblestoneMod.MOD_ID)
-public final class ConwaysGameOfCobblestoneMod
+@Mod(GameOfCobbleMod.MOD_ID)
+public final class GameOfCobbleMod
 {
     public static final String MOD_ID = "conways_game_of_cobblestone";
 
-    public ConwaysGameOfCobblestoneMod()
+    public GameOfCobbleMod()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 

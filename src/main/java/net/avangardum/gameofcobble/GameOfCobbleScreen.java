@@ -9,11 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-final class ConwaysGameOfCobblestoneScreen extends AbstractContainerScreen<ConwaysGameOfCobblestoneMenu> {
+final class GameOfCobbleScreen extends AbstractContainerScreen<GameOfCobbleMenu> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(
-            ConwaysGameOfCobblestoneMod.MOD_ID, "textures/gui/conways_game_of_cobblestone_gui.png");
+            GameOfCobbleMod.MOD_ID, "textures/gui/conways_game_of_cobblestone_gui.png");
 
-    public ConwaysGameOfCobblestoneScreen(ConwaysGameOfCobblestoneMenu menu, Inventory playerInventory, Component title)
+    public GameOfCobbleScreen(GameOfCobbleMenu menu, Inventory playerInventory, Component title)
     {
         super(menu, playerInventory, title);
     }

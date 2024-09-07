@@ -15,10 +15,10 @@ import java.util.function.Supplier;
 
 public final class ModBlocks {
     public static final @NotNull DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, ConwaysGameOfCobblestoneMod.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.BLOCKS, GameOfCobbleMod.MOD_ID);
 
     public static final @NotNull RegistryObject<Block> CONWAYS_GAME_OF_COBBLESTONE_BLOCK =
-            registerBlock("conways_game_of_cobblestone_block", () -> new ConwaysGameOfCobblestoneBlock(
+            registerBlock("conways_game_of_cobblestone_block", () -> new GameOfCobbleBlock(
             BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
 
     public static void register(@NotNull IEventBus bus){

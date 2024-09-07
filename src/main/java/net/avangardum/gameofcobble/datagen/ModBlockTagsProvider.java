@@ -1,6 +1,6 @@
 package net.avangardum.gameofcobble.datagen;
 
-import net.avangardum.gameofcobble.ConwaysGameOfCobblestoneMod;
+import net.avangardum.gameofcobble.GameOfCobbleMod;
 import net.avangardum.gameofcobble.ModBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -15,7 +15,7 @@ final class ModBlockTagsProvider extends BlockTagsProvider {
     public ModBlockTagsProvider(@NotNull PackOutput output,
             @NotNull CompletableFuture<HolderLookup.Provider> lookupProvider,
             @NotNull ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, ConwaysGameOfCobblestoneMod.MOD_ID, existingFileHelper);
+        super(output, lookupProvider, GameOfCobbleMod.MOD_ID, existingFileHelper);
     }
 
     @Override

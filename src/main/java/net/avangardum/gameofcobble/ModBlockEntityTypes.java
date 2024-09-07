@@ -9,14 +9,14 @@ import org.jetbrains.annotations.NotNull;
 
 final class ModBlockEntityTypes {
     public static final @NotNull DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, ConwaysGameOfCobblestoneMod.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GameOfCobbleMod.MOD_ID);
 
     // Suppress the nullability warning caused by passing null to build. Forge documentation allows passing null there.
     @SuppressWarnings("DataFlowIssue")
-    public static final @NotNull RegistryObject<BlockEntityType<ConwaysGameOfCobblestoneBlockEntity>>
+    public static final @NotNull RegistryObject<BlockEntityType<GameOfCobbleBlockEntity>>
             CONWAYS_GAME_OF_COBBLESTONE_BET =
             BLOCK_ENTITY_TYPES.register("conways_game_of_cobblestone_bet", () ->
-            BlockEntityType.Builder.of(ConwaysGameOfCobblestoneBlockEntity::new,
+            BlockEntityType.Builder.of(GameOfCobbleBlockEntity::new,
             ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()).build(null));
 
     public static void register(@NotNull IEventBus bus) {
