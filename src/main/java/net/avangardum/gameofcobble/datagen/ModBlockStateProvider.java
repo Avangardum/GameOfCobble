@@ -16,7 +16,7 @@ final class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        blockWithItem(ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK);
+        blockWithItem(ModBlocks.GAME_OF_COBBLE_BLOCK);
     }
 
     private void blockWithItem(@NotNull RegistryObject<Block> blockRegistryObject) {

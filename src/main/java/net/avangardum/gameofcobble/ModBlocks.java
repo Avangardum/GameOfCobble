@@ -17,8 +17,8 @@ public final class ModBlocks {
     public static final @NotNull DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, GameOfCobbleMod.MOD_ID);
 
-    public static final @NotNull RegistryObject<Block> CONWAYS_GAME_OF_COBBLESTONE_BLOCK =
-            registerBlock("conways_game_of_cobblestone_block", () -> new GameOfCobbleBlock(
+    public static final @NotNull RegistryObject<Block> GAME_OF_COBBLE_BLOCK =
+            registerBlock("game_of_cobble_block", () -> new GameOfCobbleBlock(
             BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
 
     public static void register(@NotNull IEventBus bus){

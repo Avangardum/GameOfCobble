@@ -9,7 +9,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(GameOfCobbleMod.MOD_ID)
 public final class GameOfCobbleMod
 {
-    public static final String MOD_ID = "conways_game_of_cobblestone";
+    public static final String MOD_ID = "gameofcobble";
 
     public GameOfCobbleMod()
     {

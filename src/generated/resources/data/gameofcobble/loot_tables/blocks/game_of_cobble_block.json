@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "conways_game_of_cobblestone:conways_game_of_cobblestone_block"
+          "name": "gameofcobble:game_of_cobble_block"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "conways_game_of_cobblestone:blocks/conways_game_of_cobblestone_block"
+  "random_sequence": "gameofcobble:blocks/game_of_cobble_block"
 }

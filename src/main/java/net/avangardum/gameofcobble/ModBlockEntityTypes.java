@@ -17,7 +17,7 @@ final class ModBlockEntityTypes {
             CONWAYS_GAME_OF_COBBLESTONE_BET =
             BLOCK_ENTITY_TYPES.register("conways_game_of_cobblestone_bet", () ->
             BlockEntityType.Builder.of(GameOfCobbleBlockEntity::new,
-            ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()).build(null));
+            ModBlocks.GAME_OF_COBBLE_BLOCK.get()).build(null));
 
     public static void register(@NotNull IEventBus bus) {
         BLOCK_ENTITY_TYPES.register(bus);

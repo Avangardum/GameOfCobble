@@ -16,7 +16,7 @@ final class ModBlockLootSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get());
+        dropSelf(ModBlocks.GAME_OF_COBBLE_BLOCK.get());
     }
 
     @Override

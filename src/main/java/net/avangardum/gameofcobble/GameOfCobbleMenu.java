@@ -55,7 +55,7 @@ final class GameOfCobbleMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(@NotNull Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player,
-                ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get());
+                ModBlocks.GAME_OF_COBBLE_BLOCK.get());
     }
 
     private void addPlayerHotBarSlots(Inventory playerInventory) {

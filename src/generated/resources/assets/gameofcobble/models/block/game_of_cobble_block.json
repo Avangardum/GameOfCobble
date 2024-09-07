@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "gameofcobble:block/game_of_cobble_block"
+  }
+}

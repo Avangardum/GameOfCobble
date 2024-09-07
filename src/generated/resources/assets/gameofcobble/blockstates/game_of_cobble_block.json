@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "gameofcobble:block/game_of_cobble_block"
+    }
+  }
+}

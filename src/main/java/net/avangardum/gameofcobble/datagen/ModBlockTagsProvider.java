@@ -21,11 +21,11 @@ final class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(@NotNull HolderLookup.Provider provider) {
         tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
-                ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()
+                ModBlocks.GAME_OF_COBBLE_BLOCK.get()
         );
 
         tag(BlockTags.NEEDS_STONE_TOOL).add(
-                ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get()
+                ModBlocks.GAME_OF_COBBLE_BLOCK.get()
         );
     }
 }

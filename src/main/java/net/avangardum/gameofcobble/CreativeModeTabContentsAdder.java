@@ -12,7 +12,7 @@ final class CreativeModeTabContentsAdder {
     public static void addCreativeModeTabContents(@NotNull BuildCreativeModeTabContentsEvent event)
     {
         if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
-            event.accept(ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK);
+            event.accept(ModBlocks.GAME_OF_COBBLE_BLOCK);
         }
     }
 }

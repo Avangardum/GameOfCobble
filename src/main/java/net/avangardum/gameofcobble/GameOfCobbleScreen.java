@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 final class GameOfCobbleScreen extends AbstractContainerScreen<GameOfCobbleMenu> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(
-            GameOfCobbleMod.MOD_ID, "textures/gui/conways_game_of_cobblestone_gui.png");
+            GameOfCobbleMod.MOD_ID, "textures/gui/game_of_cobble_gui.png");
 
     public GameOfCobbleScreen(GameOfCobbleMenu menu, Inventory playerInventory, Component title)
     {

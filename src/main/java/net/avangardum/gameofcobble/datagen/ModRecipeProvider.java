@@ -20,7 +20,7 @@ final class ModRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> writer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CONWAYS_GAME_OF_COBBLESTONE_BLOCK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.GAME_OF_COBBLE_BLOCK.get())
                 .pattern("III")
                 .pattern("ICI")
                 .pattern("III")
