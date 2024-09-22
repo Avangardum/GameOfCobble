@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -14,12 +15,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 final class GameOfCobbleBlock extends BaseEntityBlock {
     private static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
+    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public GameOfCobbleBlock(@NotNull Properties properties) {
         super(properties);
@@ -79,8 +82,14 @@ final class GameOfCobbleBlock extends BaseEntityBlock {
     }
 
     @Override
+    public @NotNull BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
     protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(TRIGGERED);
+        builder.add(FACING);
     }
 
     private @NotNull GameOfCobbleBlockEntity getBlockEntity(@NotNull Level level, @NotNull BlockPos position) {

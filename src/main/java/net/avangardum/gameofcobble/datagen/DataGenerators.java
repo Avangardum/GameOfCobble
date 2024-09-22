@@ -15,7 +15,6 @@ final class DataGenerators {
         var existingFileHelper = event.getExistingFileHelper();
         var lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new ModLootTableProvider(packOutput));
         generator.addProvider(event.includeServer(),
                 new ModBlockTagsProvider(packOutput, lookupProvider, existingFileHelper));

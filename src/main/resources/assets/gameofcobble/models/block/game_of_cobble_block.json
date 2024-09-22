@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "minecraft:block/white_concrete",
+    "side": "gameofcobble:block/game_of_cobble_block",
+    "top": "gameofcobble:block/game_of_cobble_block"
+  }
+}
