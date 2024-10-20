@@ -5,7 +5,13 @@ final class GameOfLifeGrid {
     private final int height;
     private final Boolean[] flatCells;
 
-    public GameOfLifeGrid(int width, int height, Boolean[] flatCells) {
+    public GameOfLifeGrid(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.flatCells = new Boolean[width * height];
+    }
+
+    private GameOfLifeGrid(int width, int height, Boolean[] flatCells) {
         assert width * height == flatCells.length;
         this.width = width;
         this.height = height;
@@ -40,6 +46,18 @@ final class GameOfLifeGrid {
 
     public Boolean[] getFlatCells() {
         return flatCells.clone();
+    }
+
+    @Override
+    public String toString() {
+        var stringBuilder = new StringBuilder("GameOfLifeGrid\n");
+        for (var row = 0; row < height; row++) {
+            for (var column = 0; column < width; column++){
+                stringBuilder.append(isCellLiving(row, column) ? "*" : ".");
+            }
+            if (row < height - 1) stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     private int countLivingNeighbors(int row, int column) {
