@@ -5,17 +5,30 @@ final class GameOfLifeGrid {
     private final int height;
     private final Boolean[] flatCells;
 
-    public GameOfLifeGrid(int width, int height) {
-        this.width = width;
+    public GameOfLifeGrid(int height, int width) {
         this.height = height;
-        this.flatCells = new Boolean[width * height];
+        this.width = width;
+        this.flatCells = new Boolean[height * width];
+        for (var row = 0; row < height; row++) {
+            for (var column = 0; column < width; column++) {
+                setIsCellLiving(row, column, false);
+            }
+        }
     }
 
-    private GameOfLifeGrid(int width, int height, Boolean[] flatCells) {
-        assert width * height == flatCells.length;
-        this.width = width;
+    private GameOfLifeGrid(int height, int width, Boolean[] flatCells) {
+        assert height * width == flatCells.length;
         this.height = height;
+        this.width = width;
         this.flatCells = flatCells.clone();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public boolean isCellLiving(int row, int column) {
@@ -42,10 +55,6 @@ final class GameOfLifeGrid {
                 setIsCellLiving(row, column, nextIsCellLiving);
             }
         }
-    }
-
-    public Boolean[] getFlatCells() {
-        return flatCells.clone();
     }
 
     @Override
@@ -80,6 +89,6 @@ final class GameOfLifeGrid {
     }
 
     private GameOfLifeGrid copy() {
-        return new GameOfLifeGrid(width, height, flatCells);
+        return new GameOfLifeGrid(height, width, flatCells);
     }
 }
