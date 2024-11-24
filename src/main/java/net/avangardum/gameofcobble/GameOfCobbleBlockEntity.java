@@ -290,7 +290,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
                 if (!grid.isCellLiving(row, column)) continue;
                 var blockPos = getCorrespondingBlockPosFromGridRowColumn(cluster, row, column);
                 if (isBlockPosOccupied(blockPos)) continue;
-                var container = new SimpleContainer(new ItemStack(Blocks.COBBLESTONE, 1));
+                var container = new SimpleContainer(new ItemStack(assertNotNull(cluster.getItem()), 1));
                 Containers.dropContents(level, blockPos, container);
             }
         }
