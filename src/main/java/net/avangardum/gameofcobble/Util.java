@@ -8,4 +8,9 @@ class Util {
     public static <T> @Nullable T as(@NotNull Class<T> cl, @Nullable Object obj) {
         return cl.isInstance(obj) ? cl.cast(obj) : null;
     }
+
+    public static <T> @NotNull T assertNotNull(@Nullable T value) {
+        assert value != null;
+        return value;
+    }
 }

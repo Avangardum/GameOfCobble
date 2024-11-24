@@ -20,6 +20,6 @@ public final class GameOfCobbleMod
         ModBlockEntityTypes.register(modEventBus);
         ModMenuTypes.register(modEventBus);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
 }

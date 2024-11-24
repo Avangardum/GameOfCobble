@@ -13,6 +13,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -40,62 +41,6 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     // A Game of Life grid is 2 cells bigger than its corresponding cluster. This creates a 1 cell thick border needed
     // to process drops.
 
-    private static class Cluster {
-        private final Set<GameOfCobbleBlockEntity> blockEntities;
-        private final GameOfCobbleBlockEntity calculator;
-        private final BlockPos startPos;
-        private final BlockPos endPos;
-
-        public Cluster (
-            @NotNull Set<GameOfCobbleBlockEntity> blockEntities,
-            @NotNull BlockPos startPos,
-            @NotNull BlockPos endPos
-        ) {
-            this.blockEntities = blockEntities;
-            this.startPos = startPos;
-            this.endPos = endPos;
-            var optionalCalculator = blockEntities.stream().findFirst();
-            assert optionalCalculator.isPresent();
-            this.calculator = optionalCalculator.get();
-        }
-
-        public @NotNull Set<GameOfCobbleBlockEntity> getBlockEntities() {
-            return blockEntities;
-        }
-
-        public int getStartX() {
-            return startPos.getX();
-        }
-
-        public int getStartY() {
-            return startPos.getY();
-        }
-
-        public int getStartZ() {
-            return startPos.getZ();
-        }
-
-        public int getStartV() {
-            return calculator.getVFromXZ(getStartX(), getStartZ());
-        }
-
-        public int getEndX() {
-            return endPos.getX();
-        }
-
-        public int getEndY() {
-            return endPos.getY();
-        }
-
-        public int getEndZ() {
-            return endPos.getZ();
-        }
-
-        public int getEndV() {
-            return calculator.getVFromXZ(getEndX(), getEndZ());
-        }
-    }
-
     public static final int GRID_HEIGHT = 10;
     public static final int GRID_WIDTH = 10;
     public static final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
@@ -113,7 +58,14 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.is(Blocks.COBBLESTONE.asItem());
+            var cluster = getCluster();
+            if (cluster.getErrors().hasAny()) return false;
+            if (cluster.getItem() != null) {
+                return stack.is(cluster.getItem());
+            }
+            else {
+                return Config.getUsableItems().contains(stack.getItem());
+            }
         }
 
         @Override
@@ -192,17 +144,18 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
     public void redstoneTick() {
         assert level != null;
+
         if (level.getGameTime() == lastRedstoneTickTime) return;
 
         var cluster = getCluster();
+        if (cluster.getErrors().hasAny()) return;
         var grid = getGridFromCluster(cluster);
         grid.proceedToNextGeneration();
         setGridToCluster(grid, cluster);
         processDrops(grid, cluster);
     }
 
-    private Cluster getCluster() {
-        // TODO Refactor to use new helper methods.
+    private @NotNull GameOfCobbleCluster getCluster() {
         var startX = getX();
         var endX = getX();
         var startY = getY();
@@ -213,6 +166,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         blockEntitiesInCluster.add(this);
         Queue<GameOfCobbleBlockEntity> blockEntitiesToSearchForNeighbors = new ArrayDeque<>();
         blockEntitiesToSearchForNeighbors.add(this);
+        var errors = GameOfCobbleCluster.Errors.NONE;
 
         while (!blockEntitiesToSearchForNeighbors.isEmpty()) {
             var origin = blockEntitiesToSearchForNeighbors.remove();
@@ -243,14 +197,45 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
             }
         }
 
-        return new Cluster(
+        var getClusterItemResult = getClusterItem(blockEntitiesInCluster);
+        var item = getClusterItemResult.item;
+        if (getClusterItemResult.mixedItems()) errors = errors.withMixedItems();
+        else if (item != null && !Config.getUsableItems().contains(item)) errors = errors.withIllegalItem();
+
+        return new GameOfCobbleCluster(
             Collections.unmodifiableSet(blockEntitiesInCluster),
             new BlockPos(startX, startY, startZ),
-            new BlockPos(endX, endY, endZ)
+            new BlockPos(endX, endY, endZ),
+            item,
+            errors
         );
+
+        // TODO Add size limit.
     }
 
-    private GameOfLifeGrid getGridFromCluster(Cluster cluster) {
+    private record GetClusterItemResult(@Nullable Item item, boolean mixedItems) {}
+
+    private @NotNull GetClusterItemResult getClusterItem(Set<GameOfCobbleBlockEntity> blockEntities) {
+        Item item = null;
+        for (var blockEntity : blockEntities) {
+            for (var slot = 0; slot < blockEntity.itemHandler.getSlots(); slot++) {
+                var stackInSlot = blockEntity.itemHandler.getStackInSlot(slot);
+                if (stackInSlot.isEmpty()) continue;
+                var itemInSlot = stackInSlot.getItem();
+                if (item == null) {
+                    item = itemInSlot;
+                }
+                else if (item != itemInSlot) {
+                    return new GetClusterItemResult(null, true);
+                }
+            }
+        }
+        return new GetClusterItemResult(item, false);
+    }
+
+    private @NotNull GameOfLifeGrid getGridFromCluster(@NotNull GameOfCobbleCluster cluster) {
+        assert !cluster.getErrors().hasAny();
+
         var clusterHeightInBlocks = cluster.getEndY() - cluster.getStartY() + 1;
         var clusterHeightInCells = clusterHeightInBlocks * GRID_HEIGHT;
         var clusterWidthInBlocks = (isVAxisXAxis() ?
@@ -274,9 +259,11 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         return grid;
     }
 
-    private void setGridToCluster(GameOfLifeGrid grid, Cluster cluster) {
+    private void setGridToCluster(@NotNull GameOfLifeGrid grid, @NotNull GameOfCobbleCluster cluster) {
+        assert !cluster.getErrors().hasAny();
         assert level != null;
-        for (var blockEntity : cluster.blockEntities) {
+
+        for (var blockEntity : cluster.getBlockEntities()) {
             blockEntity.lastRedstoneTickTime = level.getGameTime();
             var rowOffset = getRowOffset(blockEntity, cluster);
             var columnOffset = getColumnOffset(blockEntity, cluster);
@@ -284,7 +271,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
                 for (var column = 0; column < GRID_WIDTH; column++) {
                     var isCellLiving = grid.isCellLiving(row + rowOffset, column + columnOffset);
                     blockEntity.itemHandler.setStackInSlot(getSlotFromLocalRowColumn(row, column),
-                            isCellLiving ? new ItemStack(getItem(), 1) : ItemStack.EMPTY);
+                            isCellLiving ? new ItemStack(assertNotNull(cluster.getItem()), 1) : ItemStack.EMPTY);
                 }
             }
         }
@@ -294,12 +281,10 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         return row * GRID_WIDTH + column;
     }
 
-    private ItemLike getItem() {
-        return Blocks.COBBLESTONE;
-    }
-
-    private void processDrops(GameOfLifeGrid grid, Cluster cluster) {
+    private void processDrops(GameOfLifeGrid grid, GameOfCobbleCluster cluster) {
+        assert !cluster.getErrors().hasAny();
         assert level != null;
+
         for (var row = 0; row < grid.getHeight(); row++) {
             for (var column = 0; column < grid.getWidth(); column++) {
                 if (!grid.isCellLiving(row, column)) continue;
@@ -311,7 +296,11 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         }
     }
 
-    private BlockPos getCorrespondingBlockPosFromGridRowColumn(Cluster cluster, int row, int column) {
+    private BlockPos getCorrespondingBlockPosFromGridRowColumn(
+        @NotNull GameOfCobbleCluster cluster,
+        int row,
+        int column
+    ) {
         var y = cluster.getEndY() - Math.floor((double)(row - 1) / GRID_HEIGHT);
         var v = doesVAxisPointRight() ?
                 cluster.getStartV() + Math.floor((double)(column - 1) / GRID_WIDTH) :
@@ -319,7 +308,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         return getBlockPosAtVY((int)v, (int)y);
     }
 
-    private boolean isBlockPosOccupied(BlockPos blockPos) {
+    private boolean isBlockPosOccupied(@NotNull BlockPos blockPos) {
         assert level != null;
         var block = level.getBlockState(blockPos).getBlock();
         return block != Blocks.AIR;
@@ -330,15 +319,15 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
      * For the given block entity in the given cluster determine the value that needs to be added to a local row
      * index in order to get the corresponding row index of the grid.
      */
-    private int getRowOffset(GameOfCobbleBlockEntity blockEntity, Cluster cluster) {
-        return (cluster.endPos.getY() - blockEntity.worldPosition.getY()) * GRID_HEIGHT + 1;
+    private int getRowOffset(@NotNull GameOfCobbleBlockEntity blockEntity, @NotNull GameOfCobbleCluster cluster) {
+        return (cluster.getEndY() - blockEntity.worldPosition.getY()) * GRID_HEIGHT + 1;
     }
 
     /**
      * For the given block entity in the given cluster determine the value that needs to be added to a local column
      * index in order to get the corresponding column index of the grid.
      */
-    private int getColumnOffset(GameOfCobbleBlockEntity blockEntity, Cluster cluster) {
+    private int getColumnOffset(@NotNull GameOfCobbleBlockEntity blockEntity, @NotNull GameOfCobbleCluster cluster) {
         if (doesVAxisPointRight()) {
             return (blockEntity.getV() - cluster.getStartV()) * GRID_WIDTH + 1;
         }
@@ -354,47 +343,47 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         return getHorizontalFacing() == Direction.SOUTH || getHorizontalFacing() == Direction.WEST;
     }
 
-    private BlockPos getBlockPosAtVY(int v, int y) {
+    private @NotNull BlockPos getBlockPosAtVY(int v, int y) {
         return new BlockPos(getXFromV(v), y, getZFromV(v));
     }
 
-    private int getX() {
+    public int getX() {
         return worldPosition.getX();
     }
 
-    private int getY() {
+    public int getY() {
         return worldPosition.getY();
     }
 
-    private int getZ() {
+    public int getZ() {
         return worldPosition.getZ();
     }
 
-    private int getV() {
+    public int getV() {
         return getVFromXZ(getX(), getZ());
     }
 
-    private int getC() {
+    public int getC() {
         return isVAxisXAxis() ? worldPosition.getZ() : worldPosition.getX();
     }
 
-    private int getXFromV(int v) {
+    public int getXFromV(int v) {
         return isVAxisXAxis() ? v : getC();
     }
 
-    private int getZFromV(int v) {
+    public int getZFromV(int v) {
         return isVAxisXAxis() ? getC() : v;
     }
 
-    private int getVFromXZ(int x, int z) {
+    public int getVFromXZ(int x, int z) {
         return isVAxisXAxis() ? x : z;
     }
 
-    private boolean isVAxisXAxis() {
+    public boolean isVAxisXAxis() {
         return getHorizontalFacing() == Direction.NORTH || getHorizontalFacing() == Direction.SOUTH;
     }
 
-    private Direction getHorizontalFacing() {
+    private @NotNull Direction getHorizontalFacing() {
         return getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
     }
 }
