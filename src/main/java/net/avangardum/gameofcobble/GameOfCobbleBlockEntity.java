@@ -156,12 +156,8 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     private @NotNull GameOfCobbleCluster getCluster() {
-        var startX = getX();
-        var endX = getX();
-        var startY = getY();
-        var endY = getY();
-        var startZ = getZ();
-        var endZ = getZ();
+        assert level != null;
+
         var blockEntitiesInCluster = new HashSet<GameOfCobbleBlockEntity>();
         blockEntitiesInCluster.add(this);
         Queue<GameOfCobbleBlockEntity> blockEntitiesToSearchForNeighbors = new ArrayDeque<>();
@@ -179,20 +175,12 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
                     var neighborX = getXFromV(neighborV);
                     var neighborZ = getZFromV(neighborV);
-                    assert level != null;
                     var neighbor = as(GameOfCobbleBlockEntity.class,
                             level.getBlockEntity(new BlockPos(neighborX, neighborY, neighborZ)));
                     if (neighbor == null) continue;
 
                     var isNeighborNew = blockEntitiesInCluster.add(neighbor);
                     if (isNeighborNew) blockEntitiesToSearchForNeighbors.add(neighbor);
-
-                    if (neighborX < startX) startX = neighborX;
-                    else if (neighborX > endX) endX = neighborX;
-                    if (neighborY < startY) startY = neighborY;
-                    else if (neighborY > endY) endY = neighborY;
-                    if (neighborZ < startZ) startZ = neighborZ;
-                    else if (neighborZ > endZ) endZ = neighborZ;
                 }
             }
         }
@@ -204,8 +192,8 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
         return new GameOfCobbleCluster(
             Collections.unmodifiableSet(blockEntitiesInCluster),
-            new BlockPos(startX, startY, startZ),
-            new BlockPos(endX, endY, endZ),
+            getClusterStartPos(blockEntitiesInCluster),
+            getClusterEndPos(blockEntitiesInCluster),
             item,
             errors
         );
@@ -231,6 +219,30 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
             }
         }
         return new GetClusterItemResult(item, false);
+    }
+
+    private @NotNull BlockPos getClusterStartPos(Set<GameOfCobbleBlockEntity> blockEntities) {
+        int x = Integer.MAX_VALUE;
+        int y = Integer.MAX_VALUE;
+        int z = Integer.MAX_VALUE;
+        for (var blockEntity : blockEntities) {
+            if (blockEntity.getX() < x) x = blockEntity.getX();
+            if (blockEntity.getY() < y) y = blockEntity.getY();
+            if (blockEntity.getZ() < z) z = blockEntity.getZ();
+        }
+        return new BlockPos(x, y, z);
+    }
+
+    private @NotNull BlockPos getClusterEndPos(Set<GameOfCobbleBlockEntity> blockEntities) {
+        int x = Integer.MIN_VALUE;
+        int y = Integer.MIN_VALUE;
+        int z = Integer.MIN_VALUE;
+        for (var blockEntity : blockEntities) {
+            if (blockEntity.getX() > x) x = blockEntity.getX();
+            if (blockEntity.getY() > y) y = blockEntity.getY();
+            if (blockEntity.getZ() > z) z = blockEntity.getZ();
+        }
+        return new BlockPos(x, y, z);
     }
 
     private @NotNull GameOfLifeGrid getGridFromCluster(@NotNull GameOfCobbleCluster cluster) {

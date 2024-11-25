@@ -26,13 +26,23 @@ final class Config
             .define("usableItems", List.of("minecraft:cobblestone", "minecraft:cobbled_deepslate"),
                     Config::validateItemNames);
 
+    private static final ForgeConfigSpec.IntValue MAX_CLUSTER_SIZE = BUILDER
+            .comment("Maximum amount of Game of Cobble blocks that can form a cluster." +
+                    "Clusters of a bigger size won't work.")
+            .defineInRange("maxClusterSize", 100, 1, Integer.MAX_VALUE);
+
     public static final ForgeConfigSpec SPEC = BUILDER.build();
 
     @Nullable private static Set<Item> usableItems;
+    private static int maxClusterSize;
 
     public static @NotNull Set<Item> getUsableItems() {
         if (usableItems == null) throw new IllegalStateException("Config is not yet loaded.");
         return usableItems;
+    }
+
+    public static int getMaxClusterSize() {
+        return maxClusterSize;
     }
 
     @SubscribeEvent
@@ -41,6 +51,8 @@ final class Config
         usableItems = USABLE_ITEMS.get().stream()
                 .map(x -> assertNotNull(getItemByName(x)))
                 .collect(Collectors.toUnmodifiableSet());
+
+        maxClusterSize = MAX_CLUSTER_SIZE.get();
     }
 
     private static boolean validateItemNames(@Nullable Object value) {
