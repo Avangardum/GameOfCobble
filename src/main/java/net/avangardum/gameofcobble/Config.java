@@ -27,7 +27,7 @@ final class Config
                     Config::validateItemNames);
 
     private static final ForgeConfigSpec.IntValue MAX_CLUSTER_SIZE = BUILDER
-            .comment("Maximum amount of Game of Cobble blocks that can form a cluster." +
+            .comment("Maximum amount of Game of Cobble blocks that can form a cluster. " +
                     "Clusters of a bigger size won't work.")
             .defineInRange("maxClusterSize", 100, 1, Integer.MAX_VALUE);
 
