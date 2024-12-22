@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static net.avangardum.gameofcobble.Util.*;
 
@@ -41,12 +41,11 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     // A Game of Life grid is 2 cells bigger than its corresponding cluster. This creates a 1 cell thick border needed
     // to process drops.
 
-    public static final int GRID_HEIGHT = 8;
-    public static final int GRID_WIDTH = 8;
-    public static final int GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
+    public static final int GRID_SIDE = 8;
+    public static final int GRID_AREA = GRID_SIDE * GRID_SIDE;
     private static final String INVENTORY_SAVE_KEY = "inventory";
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(GRID_SIZE) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(GRID_AREA) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -127,6 +126,13 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         return saveWithoutMetadata();
     }
 
+    public @NotNull GameOfLifeGrid getGrid() {
+        var flatCells = IntStream.range(0, GRID_AREA)
+                .mapToObj(x -> !itemHandler.getStackInSlot(x).isEmpty())
+                .toArray(Boolean[]::new);
+        return new GameOfLifeGrid(GRID_SIDE, GRID_SIDE, flatCells);
+    }
+
     @Override
     protected void saveAdditional(@NotNull CompoundTag pTag) {
         pTag.put(INVENTORY_SAVE_KEY, itemHandler.serializeNBT());
@@ -134,8 +140,8 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     public void dropInventory() {
-        var container = new SimpleContainer(GRID_SIZE);
-        for (int i = 0; i < GRID_SIZE; i++) {
+        var container = new SimpleContainer(GRID_AREA);
+        for (int i = 0; i < GRID_AREA; i++) {
             container.setItem(i, itemHandler.getStackInSlot(i));
         }
         assert level != null;
@@ -253,18 +259,18 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         assert !cluster.getErrors().hasAny();
 
         var clusterHeightInBlocks = cluster.getEndY() - cluster.getStartY() + 1;
-        var clusterHeightInCells = clusterHeightInBlocks * GRID_HEIGHT;
+        var clusterHeightInCells = clusterHeightInBlocks * GRID_SIDE;
         var clusterWidthInBlocks = (isVAxisXAxis() ?
                 cluster.getEndX() - cluster.getStartX() : cluster.getEndZ() - cluster.getStartZ()) + 1;
-        var clusterWidthInCells = clusterWidthInBlocks * GRID_WIDTH;
+        var clusterWidthInCells = clusterWidthInBlocks * GRID_SIDE;
         // Add 2 cells to each dimension to have a 1 cell thick border for processing drops.
         var grid = new GameOfLifeGrid(clusterHeightInCells + 2, clusterWidthInCells + 2);
 
         for (var blockEntity : cluster.getBlockEntities()) {
             var rowOffset = getRowOffset(blockEntity, cluster);
             var columnOffset = getColumnOffset(blockEntity, cluster);
-            for (var row = 0; row < GRID_HEIGHT; row++) {
-                for (var column = 0; column < GRID_WIDTH; column++) {
+            for (var row = 0; row < GRID_SIDE; row++) {
+                for (var column = 0; column < GRID_SIDE; column++) {
                     var isLivingCell =
                             !blockEntity.itemHandler.getStackInSlot(getSlotFromLocalRowColumn(row, column)).isEmpty();
                     grid.setIsCellLiving(row + rowOffset, column + columnOffset, isLivingCell);
@@ -283,8 +289,8 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
             blockEntity.lastRedstoneTickTime = level.getGameTime();
             var rowOffset = getRowOffset(blockEntity, cluster);
             var columnOffset = getColumnOffset(blockEntity, cluster);
-            for (var row = 0; row < GRID_HEIGHT; row++) {
-                for (var column = 0; column < GRID_WIDTH; column++) {
+            for (var row = 0; row < GRID_SIDE; row++) {
+                for (var column = 0; column < GRID_SIDE; column++) {
                     var isCellLiving = grid.isCellLiving(row + rowOffset, column + columnOffset);
                     blockEntity.itemHandler.setStackInSlot(getSlotFromLocalRowColumn(row, column),
                             isCellLiving ? new ItemStack(assertNotNull(cluster.getItem()), 1) : ItemStack.EMPTY);
@@ -294,7 +300,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     private int getSlotFromLocalRowColumn(int row, int column) {
-        return row * GRID_WIDTH + column;
+        return row * GRID_SIDE + column;
     }
 
     private void processDrops(GameOfLifeGrid grid, GameOfCobbleCluster cluster) {
@@ -317,10 +323,10 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         int row,
         int column
     ) {
-        var y = cluster.getEndY() - Math.floor((double)(row - 1) / GRID_HEIGHT);
+        var y = cluster.getEndY() - Math.floor((double)(row - 1) / GRID_SIDE);
         var v = doesVAxisPointRight() ?
-                cluster.getStartV() + Math.floor((double)(column - 1) / GRID_WIDTH) :
-                cluster.getEndV() - Math.floor((double)(column - 1) / GRID_WIDTH);
+                cluster.getStartV() + Math.floor((double)(column - 1) / GRID_SIDE) :
+                cluster.getEndV() - Math.floor((double)(column - 1) / GRID_SIDE);
         return getBlockPosAtVY((int)v, (int)y);
     }
 
@@ -336,7 +342,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
      * index in order to get the corresponding row index of the grid.
      */
     private int getRowOffset(@NotNull GameOfCobbleBlockEntity blockEntity, @NotNull GameOfCobbleCluster cluster) {
-        return (cluster.getEndY() - blockEntity.worldPosition.getY()) * GRID_HEIGHT + 1;
+        return (cluster.getEndY() - blockEntity.worldPosition.getY()) * GRID_SIDE + 1;
     }
 
     /**
@@ -345,10 +351,10 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
      */
     private int getColumnOffset(@NotNull GameOfCobbleBlockEntity blockEntity, @NotNull GameOfCobbleCluster cluster) {
         if (doesVAxisPointRight()) {
-            return (blockEntity.getV() - cluster.getStartV()) * GRID_WIDTH + 1;
+            return (blockEntity.getV() - cluster.getStartV()) * GRID_SIDE + 1;
         }
         else {
-            return (cluster.getEndV() - blockEntity.getV()) * GRID_WIDTH + 1;
+            return (cluster.getEndV() - blockEntity.getV()) * GRID_SIDE + 1;
         }
     }
 

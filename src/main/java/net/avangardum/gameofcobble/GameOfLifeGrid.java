@@ -16,7 +16,7 @@ final class GameOfLifeGrid {
         }
     }
 
-    private GameOfLifeGrid(int height, int width, Boolean[] flatCells) {
+    public GameOfLifeGrid(int height, int width, Boolean[] flatCells) {
         assert height * width == flatCells.length;
         this.height = height;
         this.width = width;

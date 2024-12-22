@@ -18,7 +18,7 @@ final class GameOfCobbleMenu extends AbstractContainerMenu {
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int HOTBAR_FIRST_SLOT_INDEX = 0;
     private static final int HOTBAR_LAST_SLOT_INDEX = HOTBAR_FIRST_SLOT_INDEX + HOTBAR_SLOT_COUNT - 1;
-    private static final int CONWAYS_GAME_OF_COBBLESTONE_SLOT_COUNT = GameOfCobbleBlockEntity.GRID_SIZE;
+    private static final int CONWAYS_GAME_OF_COBBLESTONE_SLOT_COUNT = GameOfCobbleBlockEntity.GRID_AREA;
     private static final int CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX = HOTBAR_LAST_SLOT_INDEX + 1;
     private static final int CONWAYS_GAME_OF_COBBLESTONE_LAST_SLOT_INDEX =
             CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX + CONWAYS_GAME_OF_COBBLESTONE_SLOT_COUNT - 1;
@@ -73,8 +73,8 @@ final class GameOfCobbleMenu extends AbstractContainerMenu {
                 .orElseThrow(() -> new RuntimeException("Item handler does not exist"));
         var startX = 8;
         var startY = 8;
-        var height = GameOfCobbleBlockEntity.GRID_HEIGHT;
-        var width = GameOfCobbleBlockEntity.GRID_WIDTH;
+        var height = GameOfCobbleBlockEntity.GRID_SIDE;
+        var width = GameOfCobbleBlockEntity.GRID_SIDE;
         for (var row = 0; row < height; row++) {
             for (var column = 0; column < width; column++) {
                 var index = row * width + column;

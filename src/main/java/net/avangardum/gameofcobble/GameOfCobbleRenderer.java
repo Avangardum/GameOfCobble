@@ -32,7 +32,19 @@ class GameOfCobbleRenderer implements BlockEntityRenderer<GameOfCobbleBlockEntit
         poseStack.pushPose();
         var facing = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         applyCommonTransformations(poseStack, facing);
-        drawQuad(context, new Vector3f(0.5f, 0.5f, 0), 1);
+        var grid = blockEntity.getGrid();
+        var quadSide = 1f / GameOfCobbleBlockEntity.GRID_SIDE;
+        var firstQuadPosition = new Vector3f(1, 1, 0).mul(1 - quadSide / 2);
+
+        for (var row = 0; row < GameOfCobbleBlockEntity.GRID_SIDE; row++) {
+            for (var column = 0; column < GameOfCobbleBlockEntity.GRID_SIDE; column++) {
+                if (!grid.isCellLiving(row, column)) continue;
+                Vector3f position = new Vector3f();
+                firstQuadPosition.sub(new Vector3f(column * quadSide, row * quadSide, 0), position);
+                drawQuad(context, position, quadSide);
+            }
+        }
+
         poseStack.popPose();
     }
 
@@ -52,20 +64,21 @@ class GameOfCobbleRenderer implements BlockEntityRenderer<GameOfCobbleBlockEntit
                 poseStack.mulPose(Axis.YN.rotationDegrees(90));
                 break;
             case SOUTH:
-                poseStack.translate(0, 0, 1.001);
+                poseStack.translate(1, 0, 1.001);
+                poseStack.mulPose(Axis.YN.rotationDegrees(180));
                 break;
             case WEST:
-                poseStack.translate(-0.001, 0, 0);
-                poseStack.mulPose(Axis.YN.rotationDegrees(90));
+                poseStack.translate(-0.001, 0, 1);
+                poseStack.mulPose(Axis.YN.rotationDegrees(270));
                 break;
         }
     }
 
-    private void drawQuad(@NotNull RenderingContext context, Vector3f position, float scale) {
-        drawVertex(context, new Vector3f(position.x() - scale / 2, position.y() - scale / 2, position.z()));
-        drawVertex(context, new Vector3f(position.x() - scale / 2, position.y() + scale / 2, position.z()));
-        drawVertex(context, new Vector3f(position.x() + scale / 2, position.y() + scale / 2, position.z()));
-        drawVertex(context, new Vector3f(position.x() + scale / 2, position.y() - scale / 2, position.z()));
+    private void drawQuad(@NotNull RenderingContext context, Vector3f position, float side) {
+        drawVertex(context, new Vector3f(position.x() - side / 2, position.y() - side / 2, position.z()));
+        drawVertex(context, new Vector3f(position.x() - side / 2, position.y() + side / 2, position.z()));
+        drawVertex(context, new Vector3f(position.x() + side / 2, position.y() + side / 2, position.z()));
+        drawVertex(context, new Vector3f(position.x() + side / 2, position.y() - side / 2, position.z()));
     }
 
     private void drawVertex(@NotNull RenderingContext context, @NotNull Vector3f position) {
