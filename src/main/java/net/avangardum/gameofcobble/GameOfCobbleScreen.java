@@ -24,8 +24,8 @@ final class GameOfCobbleScreen extends AbstractContainerScreen<GameOfCobbleMenu>
         var offScreenLabelY = 10000;
         titleLabelY = offScreenLabelY;
         inventoryLabelY = offScreenLabelY;
-        imageWidth = 193;
-        imageHeight = 215;
+        imageWidth = 176;
+        imageHeight = 238;
         leftPos = (width - imageWidth) / 2;
         topPos = (height - imageHeight) / 2;
     }

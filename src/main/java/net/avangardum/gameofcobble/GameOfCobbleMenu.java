@@ -15,24 +15,28 @@ import org.jetbrains.annotations.NotNull;
 
 final class GameOfCobbleMenu extends AbstractContainerMenu {
     private static final int SLOT_SIZE = 18;
-    private static final int HOTBAR_SLOT_COUNT = 9;
+    private static final int INVENTORY_ROW_COUNT = 3;
+    private static final int INVENTORY_COLUMN_COUNT = 9;
     private static final int HOTBAR_FIRST_SLOT_INDEX = 0;
-    private static final int HOTBAR_LAST_SLOT_INDEX = HOTBAR_FIRST_SLOT_INDEX + HOTBAR_SLOT_COUNT - 1;
-    private static final int CONWAYS_GAME_OF_COBBLESTONE_SLOT_COUNT = GameOfCobbleBlockEntity.GRID_AREA;
-    private static final int CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX = HOTBAR_LAST_SLOT_INDEX + 1;
-    private static final int CONWAYS_GAME_OF_COBBLESTONE_LAST_SLOT_INDEX =
-            CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX + CONWAYS_GAME_OF_COBBLESTONE_SLOT_COUNT - 1;
+    private static final int HOTBAR_LAST_SLOT_INDEX = HOTBAR_FIRST_SLOT_INDEX + INVENTORY_COLUMN_COUNT - 1;
+    private static final int INVENTORY_FIRST_SLOT_INDEX = HOTBAR_LAST_SLOT_INDEX + 1;
+    private static final int INVENTORY_LAST_SLOT_INDEX =
+            INVENTORY_FIRST_SLOT_INDEX + INVENTORY_ROW_COUNT * INVENTORY_COLUMN_COUNT - 1;
+    private static final int GAME_OF_COBBLE_FIRST_SLOT_INDEX = INVENTORY_LAST_SLOT_INDEX + 1;
+    private static final int GAME_OF_COBBLE_LAST_SLOT_INDEX =
+            GAME_OF_COBBLE_FIRST_SLOT_INDEX + GameOfCobbleBlockEntity.GRID_AREA - 1;
 
     private final GameOfCobbleBlockEntity blockEntity;
     private final Level level;
 
     GameOfCobbleMenu(int containerId, @NotNull Inventory playerInventory,
                      @NotNull GameOfCobbleBlockEntity blockEntity) {
-        super(ModMenuTypes.CONWAYS_GAME_OF_COBBLESTONE_MENU.get(), containerId);
+        super(ModMenuTypes.GAME_OF_COBBLE_MENU.get(), containerId);
         this.blockEntity = blockEntity;
         level = playerInventory.player.level();
-        addPlayerHotBarSlots(playerInventory);
-        addBlockEntitySlots();
+        addPlayerHotbarSlots(playerInventory);
+        addPlayerInventorySlots(playerInventory);
+        addGameOfCobbleSlots();
     }
 
     GameOfCobbleMenu(int containerId, @NotNull Inventory inventory, @NotNull FriendlyByteBuf extraData) {
@@ -41,14 +45,14 @@ final class GameOfCobbleMenu extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        if (!(CONWAYS_GAME_OF_COBBLESTONE_FIRST_SLOT_INDEX <= index &&
-                index <= CONWAYS_GAME_OF_COBBLESTONE_LAST_SLOT_INDEX))
+        if (!(GAME_OF_COBBLE_FIRST_SLOT_INDEX <= index &&
+                index <= GAME_OF_COBBLE_LAST_SLOT_INDEX))
             return ItemStack.EMPTY;
 
         var slot = slots.get(index);
         var stack = slot.getItem();
         var stackCopy = stack.copy();
-        var isSuccessful = moveItemStackTo(stack, HOTBAR_FIRST_SLOT_INDEX, HOTBAR_LAST_SLOT_INDEX + 1, false);
+        var isSuccessful = moveItemStackTo(stack, HOTBAR_FIRST_SLOT_INDEX, INVENTORY_LAST_SLOT_INDEX + 1, false);
         return isSuccessful ? stackCopy : ItemStack.EMPTY;
     }
 
@@ -58,20 +62,32 @@ final class GameOfCobbleMenu extends AbstractContainerMenu {
                 ModBlocks.GAME_OF_COBBLE_BLOCK.get());
     }
 
-    private void addPlayerHotBarSlots(Inventory playerInventory) {
-        var slotCount = 9;
-        var startX = 17;
-        var y = 192;
-        for (var index = 0; index < slotCount; index++) {
-            int x = startX + index * SLOT_SIZE;
+    private void addPlayerHotbarSlots(Inventory playerInventory) {
+        var startX = 8;
+        var y = 214;
+        for (var index = 0; index < INVENTORY_COLUMN_COUNT; index++) {
+            var x = startX + index * SLOT_SIZE;
             addSlot(new Slot(playerInventory, index, x, y));
         }
     }
 
-    private void addBlockEntitySlots() {
+    private void addPlayerInventorySlots(Inventory playerInventory) {
+        var startX = 8;
+        var startY = 156;
+        for (var row = 0; row < INVENTORY_ROW_COUNT; row++) {
+            for (var column = 0; column < INVENTORY_COLUMN_COUNT; column++) {
+                var x = startX + column * SLOT_SIZE;
+                var y = startY + row * SLOT_SIZE;
+                var slotIndex = (1 + row) * INVENTORY_COLUMN_COUNT + column;
+                addSlot(new Slot(playerInventory, slotIndex, x, y));
+            }
+        }
+    }
+
+    private void addGameOfCobbleSlots() {
         var itemHandler = blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER)
                 .orElseThrow(() -> new RuntimeException("Item handler does not exist"));
-        var startX = 8;
+        var startX = 17;
         var startY = 8;
         var height = GameOfCobbleBlockEntity.GRID_SIDE;
         var width = GameOfCobbleBlockEntity.GRID_SIDE;
