@@ -32,7 +32,7 @@ class GameOfCobbleRenderer implements BlockEntityRenderer<GameOfCobbleBlockEntit
         poseStack.pushPose();
         var facing = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         applyCommonTransformations(poseStack, facing);
-        var grid = blockEntity.getGrid();
+        var grid = blockEntity.getDisplayGrid();
         var quadSide = 1f / GameOfCobbleBlockEntity.GRID_SIDE;
         var firstQuadPosition = new Vector3f(1, 1, 0).mul(1 - quadSide / 2);
 

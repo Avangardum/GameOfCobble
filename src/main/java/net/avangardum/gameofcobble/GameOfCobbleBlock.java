@@ -41,11 +41,9 @@ final class GameOfCobbleBlock extends BaseEntityBlock {
     @Override
     public void onRemove(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos position,
             @NotNull BlockState newBlockState, boolean isMovedByPiston) {
-        if (blockState.getBlock() != newBlockState.getBlock()) {
-            var blockEntity = getBlockEntity(level, position);
-            blockEntity.dropInventory();
-        }
-
+        var isActuallyRemoving = blockState.getBlock() != newBlockState.getBlock();
+        var blockEntity = getBlockEntity(level, position);
+        if (isActuallyRemoving) blockEntity.dropInventory();
         super.onRemove(blockState, level, position, newBlockState, isMovedByPiston);
     }
 

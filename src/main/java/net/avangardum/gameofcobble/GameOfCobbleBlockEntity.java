@@ -126,11 +126,20 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         return saveWithoutMetadata();
     }
 
-    public @NotNull GameOfLifeGrid getGrid() {
+    public @NotNull GameOfLifeGrid getDisplayGrid() {
+        if (getCluster().getErrors().hasAny()) return getErrorDisplayGrid();
+
         var flatCells = IntStream.range(0, GRID_AREA)
                 .mapToObj(x -> !itemHandler.getStackInSlot(x).isEmpty())
                 .toArray(Boolean[]::new);
         return new GameOfLifeGrid(GRID_SIDE, GRID_SIDE, flatCells);
+    }
+
+    private @NotNull GameOfLifeGrid getErrorDisplayGrid() {
+        if (getCluster().getErrors().tooBig()) return ErrorDisplayGrids.TOO_BIG_CLUSTER;
+        else if (getCluster().getErrors().illegalItem()) return ErrorDisplayGrids.ILLEGAL_ITEM;
+        else if (getCluster().getErrors().mixedItems()) return ErrorDisplayGrids.MIXED_ITEMS;
+        else throw new IllegalStateException("Unknown cluster error");
     }
 
     @Override
