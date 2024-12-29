@@ -10,6 +10,6 @@ public class RendererRegisterer {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntityTypes.CONWAYS_GAME_OF_COBBLESTONE_BET.get(),
-                GameOfCobbleRenderer::new);
+                context -> new GameOfCobbleRenderer());
     }
 }

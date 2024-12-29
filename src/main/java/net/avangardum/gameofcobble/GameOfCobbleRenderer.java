@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
@@ -14,10 +13,6 @@ import org.joml.Vector3f;
 
 class GameOfCobbleRenderer implements BlockEntityRenderer<GameOfCobbleBlockEntity> {
     private record RenderingContext(VertexConsumer vertexConsumer, PoseStack poseStack, int color) {}
-
-    public GameOfCobbleRenderer(BlockEntityRendererProvider.Context context) {
-
-    }
 
     @Override
     public void render(

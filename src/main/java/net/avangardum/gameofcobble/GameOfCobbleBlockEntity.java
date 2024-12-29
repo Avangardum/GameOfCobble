@@ -269,8 +269,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
         var clusterHeightInBlocks = cluster.getEndY() - cluster.getStartY() + 1;
         var clusterHeightInCells = clusterHeightInBlocks * GRID_SIDE;
-        var clusterWidthInBlocks = (isVAxisXAxis() ?
-                cluster.getEndX() - cluster.getStartX() : cluster.getEndZ() - cluster.getStartZ()) + 1;
+        var clusterWidthInBlocks = cluster.getEndV() - cluster.getStartV() + 1;
         var clusterWidthInCells = clusterWidthInBlocks * GRID_SIDE;
         // Add 2 cells to each dimension to have a 1 cell thick border for processing drops.
         var grid = new GameOfLifeGrid(clusterHeightInCells + 2, clusterWidthInCells + 2);
