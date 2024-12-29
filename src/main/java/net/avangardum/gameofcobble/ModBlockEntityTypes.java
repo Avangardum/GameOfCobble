@@ -14,7 +14,7 @@ final class ModBlockEntityTypes {
     // Suppress the nullability warning caused by passing null to build. Forge documentation allows passing null there.
     @SuppressWarnings("DataFlowIssue")
     public static final @NotNull RegistryObject<BlockEntityType<GameOfCobbleBlockEntity>>
-            CONWAYS_GAME_OF_COBBLESTONE_BET =
+            GAME_OF_COBBLE_BLOCK_ENTITY_TYPE =
             BLOCK_ENTITY_TYPES.register("conways_game_of_cobblestone_bet", () ->
             BlockEntityType.Builder.of(GameOfCobbleBlockEntity::new,
             ModBlocks.GAME_OF_COBBLE_BLOCK.get()).build(null));

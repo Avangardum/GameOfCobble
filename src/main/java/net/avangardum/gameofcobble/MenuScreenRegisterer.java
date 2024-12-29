@@ -11,7 +11,7 @@ final class MenuScreenRegisterer {
     @SubscribeEvent
     public static void clientSetup(@NotNull FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            MenuScreens.register(ModMenuTypes.GAME_OF_COBBLE_MENU.get(),
+            MenuScreens.register(ModMenuTypes.GAME_OF_COBBLE_MENU_TYPE.get(),
                 GameOfCobbleScreen::new);
         });
     }

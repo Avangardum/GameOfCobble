@@ -31,7 +31,7 @@ final class GameOfCobbleMenu extends AbstractContainerMenu {
 
     GameOfCobbleMenu(int containerId, @NotNull Inventory playerInventory,
                      @NotNull GameOfCobbleBlockEntity blockEntity) {
-        super(ModMenuTypes.GAME_OF_COBBLE_MENU.get(), containerId);
+        super(ModMenuTypes.GAME_OF_COBBLE_MENU_TYPE.get(), containerId);
         this.blockEntity = blockEntity;
         level = playerInventory.player.level();
         addPlayerHotbarSlots(playerInventory);

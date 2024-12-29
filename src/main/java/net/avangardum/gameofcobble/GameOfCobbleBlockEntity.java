@@ -77,7 +77,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     private long lastRedstoneTickTime = -1;
 
     public GameOfCobbleBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        super(ModBlockEntityTypes.CONWAYS_GAME_OF_COBBLESTONE_BET.get(), blockPos, blockState);
+        super(ModBlockEntityTypes.GAME_OF_COBBLE_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
     }
 
     @Override

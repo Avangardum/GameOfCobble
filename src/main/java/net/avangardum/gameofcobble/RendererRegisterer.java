@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 public class RendererRegisterer {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(ModBlockEntityTypes.CONWAYS_GAME_OF_COBBLESTONE_BET.get(),
+        event.registerBlockEntityRenderer(ModBlockEntityTypes.GAME_OF_COBBLE_BLOCK_ENTITY_TYPE.get(),
                 context -> new GameOfCobbleRenderer());
     }
 }
