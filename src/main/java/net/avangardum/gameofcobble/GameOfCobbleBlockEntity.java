@@ -170,7 +170,6 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         blockEntitiesToSearchForNeighbors.add(this);
         var errors = GameOfCobbleCluster.Errors.NONE;
 
-        whileBreakLabel:
         while (!blockEntitiesToSearchForNeighbors.isEmpty()) {
             var origin = blockEntitiesToSearchForNeighbors.remove();
             var originY = origin.getY();
@@ -191,7 +190,6 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
                     if (blockEntitiesInCluster.size() > Config.getMaxClusterSize()) {
                         errors = errors.withTooBig();
-                        break whileBreakLabel;
                     }
                 }
             }
