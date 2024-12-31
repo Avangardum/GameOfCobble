@@ -11,8 +11,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
-import java.util.concurrent.TimeUnit;
-
 class GameOfCobbleRenderer implements BlockEntityRenderer<GameOfCobbleBlockEntity> {
     private record RenderingContext(VertexConsumer vertexConsumer, PoseStack poseStack, int color) {}
 

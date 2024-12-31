@@ -5,9 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static net.avangardum.gameofcobble.Util.assertNotNull;
@@ -54,7 +52,7 @@ final class Benchmark {
             if (resultNs < minNs) minNs = resultNs;
             if (resultNs > maxNs) maxNs = resultNs;
             // This formula is chosen to avoid calculating the total sum to avoid possible integer overflow.
-            avgNs = (double)avgNs * ((double)count / ((double)count + 1.0)) + (double)resultNs / ((double)count + 1.0);
+            avgNs = avgNs * ((double)count / ((double)count + 1.0)) + (double)resultNs / ((double)count + 1.0);
         }
         count++;
 

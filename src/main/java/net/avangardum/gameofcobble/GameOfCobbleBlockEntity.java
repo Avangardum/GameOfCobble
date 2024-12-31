@@ -75,8 +75,6 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
     private @NotNull LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private long lastRedstoneTickTime = -1;
-    private @Nullable GameOfCobbleCluster cachedCluster;
-    private long clusterCachingTime = -1;
 
     public GameOfCobbleBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         super(ModBlockEntityTypes.GAME_OF_COBBLE_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
