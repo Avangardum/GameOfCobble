@@ -41,6 +41,10 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     // A Game of Life grid is 2 cells bigger than its corresponding cluster. This creates a 1 cell thick border needed
     // to process drops.
 
+    // TODO: Fix a bug allowing 2 blocks with opposite directions to form a cluster.
+    // TODO: Add documentation.
+    // TODO: Add JEI integration.
+
     public static final int GRID_SIDE = 8;
     public static final int GRID_AREA = GRID_SIDE * GRID_SIDE;
     private static final String INVENTORY_SAVE_KEY = "inventory";

@@ -24,7 +24,7 @@ final class ModRecipeProvider extends RecipeProvider {
                 .pattern("III")
                 .pattern("ICI")
                 .pattern("III")
-                .define('I', Items.IRON_INGOT)
+                .define('I', Items.IRON_NUGGET)
                 .define('C', Blocks.COBBLESTONE)
                 .unlockedBy("has_iron_ingot",
                         inventoryTrigger(ItemPredicate.Builder.item().of(Items.IRON_INGOT).build()))
