@@ -163,7 +163,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         processDrops(grid, cluster);
     }
 
-    private @NotNull GameOfCobbleCluster getCluster() {
+    public @NotNull GameOfCobbleCluster getCluster() {
         assert level != null;
 
         var blockEntitiesInCluster = new HashSet<GameOfCobbleBlockEntity>();
