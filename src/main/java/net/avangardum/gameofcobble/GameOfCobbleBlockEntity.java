@@ -41,7 +41,6 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     // A Game of Life grid is 2 cells bigger than its corresponding cluster. This creates a 1 cell thick border needed
     // to process drops.
 
-    // TODO: Fix a bug allowing 2 blocks with opposite directions to form a cluster.
     // TODO: Add documentation.
     // TODO: Add JEI integration.
 
@@ -188,6 +187,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
                     var neighbor = as(GameOfCobbleBlockEntity.class,
                             level.getBlockEntity(new BlockPos(neighborX, neighborY, neighborZ)));
                     if (neighbor == null) continue;
+                    if (neighbor.getHorizontalFacing() != origin.getHorizontalFacing()) continue;
 
                     var isNeighborNew = blockEntitiesInCluster.add(neighbor);
                     if (isNeighborNew) blockEntitiesToSearchForNeighbors.add(neighbor);
