@@ -20,8 +20,8 @@ import org.jetbrains.annotations.Nullable;
  * The Game of Cobble block entity only uses these recipes to get a list of usable items, therefore, some methods are
  * not supported.
  */
-final class GameOfCobbleRecipe implements Recipe<SimpleContainer> {
-    private static class Type implements RecipeType<GameOfCobbleRecipe> {
+public final class GameOfCobbleRecipe implements Recipe<SimpleContainer> {
+    public static class Type implements RecipeType<GameOfCobbleRecipe> {
         public static final @NotNull Type INSTANCE = new Type();
         private Type() {}
     }
@@ -36,7 +36,7 @@ final class GameOfCobbleRecipe implements Recipe<SimpleContainer> {
                 @NotNull ResourceLocation recipeId,
                 @NotNull JsonObject serializedRecipe
         ) {
-            var item = ShapedRecipe.itemFromJson(serializedRecipe.getAsJsonObject("item"));
+            var item = ShapedRecipe.itemFromJson(serializedRecipe);
             return new GameOfCobbleRecipe(recipeId, item);
         }
 
@@ -96,5 +96,9 @@ final class GameOfCobbleRecipe implements Recipe<SimpleContainer> {
     @Override
     public @NotNull RecipeType<?> getType() {
         return Type.INSTANCE;
+    }
+
+    public @NotNull Item getItem() {
+        return item;
     }
 }

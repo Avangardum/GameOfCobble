@@ -46,7 +46,8 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
     public static final int GRID_SIDE = 8;
     public static final int GRID_AREA = GRID_SIDE * GRID_SIDE;
-    private static final String INVENTORY_SAVE_KEY = "inventory";
+    private static final @NotNull String INVENTORY_SAVE_KEY = "inventory";
+    private static @Nullable List<Item> cachedUsableItems;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(GRID_AREA) {
         @Override
@@ -66,7 +67,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
                 return stack.is(cluster.getItem());
             }
             else {
-                return Config.getUsableItems().contains(stack.getItem());
+                return getUsableItems().contains(stack.getItem());
             }
         }
 
@@ -81,6 +82,15 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
     public GameOfCobbleBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         super(ModBlockEntityTypes.GAME_OF_COBBLE_BLOCK_ENTITY_TYPE.get(), blockPos, blockState);
+    }
+
+    private @NotNull List<Item> getUsableItems() {
+        assert level != null;
+        if (cachedUsableItems == null) {
+            cachedUsableItems = level.getRecipeManager().getAllRecipesFor(GameOfCobbleRecipe.Type.INSTANCE).stream()
+                    .map(GameOfCobbleRecipe::getItem).toList();
+        }
+        return cachedUsableItems;
     }
 
     @Override
@@ -202,7 +212,7 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
         var getClusterItemResult = getClusterItem(blockEntitiesInCluster);
         var item = getClusterItemResult.item;
         if (getClusterItemResult.mixedItems()) errors = errors.withMixedItems();
-        else if (item != null && !Config.getUsableItems().contains(item)) errors = errors.withIllegalItem();
+        else if (item != null && !getUsableItems().contains(item)) errors = errors.withIllegalItem();
 
         return new GameOfCobbleCluster(
             Collections.unmodifiableSet(blockEntitiesInCluster),
