@@ -2,10 +2,12 @@ package net.avangardum.gameofcobble.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.avangardum.gameofcobble.GameOfCobbleMod;
 import net.avangardum.gameofcobble.GameOfCobbleRecipe;
+import net.avangardum.gameofcobble.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -32,5 +34,10 @@ public final class GameOfCobbleJeiPlugin implements IModPlugin {
                 .getAllRecipesFor(GameOfCobbleRecipe.Type.INSTANCE);
 
         registration.addRecipes(GameOfCobbleRecipeCategory.RECIPE_TYPE, recipes);
+    }
+
+    @Override
+    public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(ModBlocks.GAME_OF_COBBLE_BLOCK.get(), GameOfCobbleRecipeCategory.RECIPE_TYPE);
     }
 }
