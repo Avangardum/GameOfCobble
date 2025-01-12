@@ -17,10 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 public final class GameOfCobbleRecipeCategory implements IRecipeCategory<GameOfCobbleRecipe> {
     private static final ResourceLocation UID = new ResourceLocation(GameOfCobbleMod.MOD_ID, "game_of_cobble");
-    private static final ResourceLocation BACKGROUND_TEXTURE_LOCATION =
-            new ResourceLocation(GameOfCobbleMod.MOD_ID, "textures/gui/game_of_cobble_gui.png");
-
+    private static final ResourceLocation BACKGROUND_TEXTURE =
+            new ResourceLocation(GameOfCobbleMod.MOD_ID, "textures/gui/game_of_cobble_jei_gui.png");
     public static final RecipeType<GameOfCobbleRecipe> RECIPE_TYPE = new RecipeType<>(UID, GameOfCobbleRecipe.class);
+    private static final int WIDTH = 113;
+    private static final int HEIGHT = 60;
 
     private final IDrawable icon;
 
@@ -49,18 +50,18 @@ public final class GameOfCobbleRecipeCategory implements IRecipeCategory<GameOfC
         @NotNull GameOfCobbleRecipe recipe,
         @NotNull IFocusGroup focuses
     ) {
-        builder.addInputSlot(10, 10).addItemLike(recipe.getItem());
-        builder.addOutputSlot(10, 10).addItemLike(recipe.getItem());
+        builder.addInputSlot(92, 22).addItemLike(recipe.getItem());
+        builder.addOutputSlot(92, 22).addItemLike(recipe.getItem());
     }
 
     @Override
     public int getWidth() {
-        return 100;
+        return WIDTH;
     }
 
     @Override
     public int getHeight() {
-        return 100;
+        return HEIGHT;
     }
 
     @Override
@@ -71,6 +72,6 @@ public final class GameOfCobbleRecipeCategory implements IRecipeCategory<GameOfC
         double mouseX,
         double mouseY
     ) {
-        guiGraphics.blit(BACKGROUND_TEXTURE_LOCATION, 0, 0, 0, 0, 100, 150);
+        guiGraphics.blit(BACKGROUND_TEXTURE, 0, 0, 0, 0, WIDTH, HEIGHT);
     }
 }
