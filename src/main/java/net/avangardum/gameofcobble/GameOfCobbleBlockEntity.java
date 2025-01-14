@@ -343,9 +343,8 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
 
     private boolean isBlockPosOccupied(@NotNull BlockPos blockPos) {
         assert level != null;
-        var block = level.getBlockState(blockPos).getBlock();
-        return block != Blocks.AIR;
-        // TODO Add support for blocks other than air.
+        var blockState = level.getBlockState(blockPos);
+        return blockState.isSolid();
     }
 
     /**
