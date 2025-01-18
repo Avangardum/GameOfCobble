@@ -36,7 +36,7 @@ public final class GameOfCobbleRecipeCategory implements IRecipeCategory<GameOfC
 
     @Override
     public @NotNull Component getTitle() {
-        return Component.translatable("game_of_cobble");
+        return Component.translatable("block.gameofcobble.game_of_cobble_block");
     }
 
     @Override

@@ -1,4 +1,5 @@
 {
     "block.gameofcobble.game_of_cobble_block": "Game of Cobble",
-    "game_of_cobble": "Game of Cobble"
+    "tooltip.gameofcobble.description": "Place some cobblestone inside and give a redstrone signal. All filled slots that neighbor 4 or more filled slots will become empty. All empty slots that neighbor exactly 3 filled slots will spawn cobblestone. Cobblestone can be spawned outside of the inventory this way, in which case it will drop into the world. Multiple blocks can be combined into a bigger grid. Check JEI usages to see what else can be used beside just normal cobblestone.",
+    "tooltip.gameofcobble.press_shift_for_description": "Hold §eSHIFT§r for description"
 }
