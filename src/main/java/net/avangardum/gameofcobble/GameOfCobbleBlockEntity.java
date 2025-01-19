@@ -16,7 +16,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -40,9 +39,6 @@ final class GameOfCobbleBlockEntity extends BlockEntity implements MenuProvider 
     // referred to as C, another horizontal coordinate is variable for different blocks and referred to as V.
     // A Game of Life grid is 2 cells bigger than its corresponding cluster. This creates a 1 cell thick border needed
     // to process drops.
-
-    // TODO: Add documentation.
-    // TODO: Add JEI integration.
 
     public static final int GRID_SIDE = 8;
     public static final int GRID_AREA = GRID_SIDE * GRID_SIDE;
