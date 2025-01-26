@@ -11,10 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static net.avangardum.gameofcobble.Util.assertNotNull;
 
 @Mod.EventBusSubscriber(modid = GameOfCobbleMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 final class Config
