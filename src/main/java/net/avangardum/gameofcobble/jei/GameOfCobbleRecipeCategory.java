@@ -20,8 +20,8 @@ public final class GameOfCobbleRecipeCategory implements IRecipeCategory<GameOfC
     private static final ResourceLocation BACKGROUND_TEXTURE =
             new ResourceLocation(GameOfCobbleMod.MOD_ID, "textures/gui/game_of_cobble_jei_gui.png");
     public static final RecipeType<GameOfCobbleRecipe> RECIPE_TYPE = new RecipeType<>(UID, GameOfCobbleRecipe.class);
-    private static final int WIDTH = 113;
-    private static final int HEIGHT = 60;
+    private static final int WIDTH = 122;
+    private static final int HEIGHT = 62;
 
     private final IDrawable icon;
 
@@ -50,8 +50,8 @@ public final class GameOfCobbleRecipeCategory implements IRecipeCategory<GameOfC
         @NotNull GameOfCobbleRecipe recipe,
         @NotNull IFocusGroup focuses
     ) {
-        builder.addInputSlot(92, 22).addItemLike(recipe.getItem());
-        builder.addOutputSlot(92, 22).addItemLike(recipe.getItem());
+        builder.addInputSlot(101, 23).addItemLike(recipe.getItem());
+        builder.addOutputSlot(101, 23).addItemLike(recipe.getItem());
     }
 
     @Override
